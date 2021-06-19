@@ -60,7 +60,7 @@ const usuariosPost = async (req = request, res = response) => {
 };
 
 const userDelete = async (req = request, res = response) => {
-  const { id } = req.params;
+  const { id, authenticatedUser } = req.params;
 
   const user = await User.findByIdAndUpdate(
     id,
@@ -68,7 +68,7 @@ const userDelete = async (req = request, res = response) => {
     { new: true }
   );
 
-  res.json({ user });
+  res.json({ user, authenticatedUser });
 };
 
 module.exports = {
