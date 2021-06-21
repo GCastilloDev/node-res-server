@@ -4,9 +4,49 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Acceso denegado</title>
+    <meta
+      name="google-signin-client_id"
+      content="78729752448-l3n7hf4pjbln07k92nk99med6iduofec.apps.googleusercontent.com"
+    />
+    <title>Google Sigin</title>
   </head>
   <body>
-    <h1>Acceso denegado</h1>
+    <h1>Google Sigin</h1>
+
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <a href="#" onclick="signOut();">Sign out</a>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <script>
+      function onSignIn(googleUser) {
+        const profile = googleUser.getBasicProfile();
+        const idToken = googleUser.getAuthResponse().id_token;
+        const url = window.location.hostname.includes("localhost")
+          ? "http://localhost:8081/api/auth/google"
+          : "https://api-node-practica.herokuapp.com/api/auth/google";
+
+        fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idToken }),
+        })
+          .then((res) => res.json())
+          .then(console.log)
+          .catch(console.log);
+
+        console.log("ID: " + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log("Name: " + profile.getName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail()); // This is null if the 'email' scope is not present.
+      }
+
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log("User signed out.");
+        });
+      }
+    </script>
   </body>
 </html>

@@ -23,6 +23,7 @@ const userPostValidates = [
 ];
 
 const userPutValidates = [
+  validateJWT,
   check("id", "No es un ID válido").isMongoId(),
   check("id").custom(userExistsByID),
   check("role").custom(isRoleValid),

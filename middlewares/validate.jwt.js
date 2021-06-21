@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const validateJWT = async (req = request, res = response, next) => {
-  const token = req.header("Authorization").trim();
+  const token = req.header("Authorization")?.trim();
   let message = "El token es requerido";
 
   // Verificar si envian token
